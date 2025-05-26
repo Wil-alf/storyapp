@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="favicon.png">
+      <link rel="manifest" href="app.webmanifest" />
+
+    <title>App</title>
+  </head>
+  <body>
+    <header>
+      <div class="main-header container">
+        <a class="brand-name" href="#/">App</a>
+        
+        <nav id="navigation-drawer" class="navigation-drawer">
+          <ul id="nav-list" class="nav-list">
+            <li><a href="#main-content" class="skip-link" tabindex="0">Skip to content</a></li>
+            <li><a class="page-content" href="#/">Beranda</a></li>
+            <li><a class="page-content" href="#/about">About</a></li>
+            <li><a class="page-content" href="#/login">Login</a></li>
+            <li><a class="page-content" href="#/add-story">Add Story</a></li>
+            <li><a class="page-content" href="#/bookmark">Bookmark</a></li>
+            <li id="push-notification-tools" class="push-notification-tools"></li>
+          </ul>
+        </nav>
+
+        <button id="drawer-button" class="drawer-button">☰</button>
+      </div>
+    </header>
+
+    <main id="main-content" class="main-content" tabindex="-1" view-transition-name="main-content"></main>
+  </body>
+</html>
