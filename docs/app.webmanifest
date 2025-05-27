@@ -1,7 +1,7 @@
 {
-  "id": "/#/",
-  "start_url": "/#/",
-  "scope": "/",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
   "name": "Proyek Intermediate",
   "short_name": "ProMediate",
   "description": "Aplikasi membuat story dan lokasi di peta.",

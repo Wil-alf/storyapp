@@ -13,20 +13,6 @@ export function sleep(time = 1000) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-// const app = new App({
-//   content: document.getElementById('main-content'),
-//   drawerButton: document.getElementById('drawer-button'),
-//   navigationDrawer: document.getElementById('navigation-drawer'),
-// });
-
-// window.addEventListener('hashchange', () => {
-//   app.renderPage();
-// });
-
-// window.addEventListener('load', () => {
-//   app.renderPage();
-// });
-
 export function convertBase64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
@@ -50,9 +36,35 @@ export async function registerServiceWorker() {
   }
  
   try {
-    const registration = await navigator.serviceWorker.register('/sw.bundle.js');
-    console.log('Service worker telah terpasang', registration);
+    console.log('Attempting to register service worker...');
+    const registration = await navigator.serviceWorker.register('./sw.bundle.js', {
+      scope: './'
+    });
+    console.log('Service worker registration successful:', registration);
+    
+    // Check if push manager is available
+    if (registration.pushManager) {
+      console.log('Push Manager is available');
+      const subscription = await registration.pushManager.getSubscription();
+      console.log('Current push subscription:', subscription);
+    } else {
+      console.log('Push Manager is NOT available');
+    }
+
+    // Check service worker state
+    if (registration.active) {
+      console.log('Service worker is active');
+    } else if (registration.installing) {
+      console.log('Service worker is installing');
+    } else if (registration.waiting) {
+      console.log('Service worker is waiting');
+    }
   } catch (error) {
-    console.log('Failed to install service worker:', error);
+    console.error('Failed to install service worker:', error);
+    console.error('Error details:', {
+      name: error.name,
+      message: error.message,
+      stack: error.stack
+    });
   }
 }

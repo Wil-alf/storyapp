@@ -59,20 +59,33 @@ export async function subscribePushNotification({ endpoint, keys: { p256dh, auth
     keys: { p256dh, auth },
   });
  
-  const fetchResponse = await fetch(ENDPOINTS.SUBSCRIBE, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${accessToken}`,
-    },
-    body: data,
-  });
-  const json = await fetchResponse.json();
+  console.log('Subscribing to push notification with endpoint:', endpoint);
+  console.log('Using API endpoint:', ENDPOINTS.SUBSCRIBE);
  
-  return {
-    ...json,
-    ok: fetchResponse.ok,
-  };
+  try {
+    const fetchResponse = await fetch(ENDPOINTS.SUBSCRIBE, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+      },
+      body: data,
+    });
+    
+    const json = await fetchResponse.json();
+    console.log('Subscribe response:', json);
+ 
+    return {
+      ...json,
+      ok: fetchResponse.ok,
+    };
+  } catch (error) {
+    console.error('Error subscribing to push notification:', error);
+    return {
+      ok: false,
+      error: error.message
+    };
+  }
 }
  
 export async function unsubscribePushNotification({ endpoint }) {

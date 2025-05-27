@@ -35,33 +35,46 @@ class App {
   }
 
   async #setupPushNotification() {
+    console.log('Setting up push notification...');
     const pushNotificationTools = document.getElementById('push-notification-tools');
-    const isSubscribed = await isCurrentPushSubscriptionAvailable();
+    console.log('Push notification tools element found:', !!pushNotificationTools);
+    
+    try {
+      const isSubscribed = await isCurrentPushSubscriptionAvailable();
+      console.log('Current subscription status:', isSubscribed);
 
-    if (isSubscribed) {
-      pushNotificationTools.innerHTML = generateUnsubscribeButtonTemplate();
-      document.getElementById('unsubscribe-button').addEventListener('click', () => {
-        unsubscribe().finally(() => {
-          this.#setupPushNotification();
+      if (isSubscribed) {
+        console.log('User is subscribed, showing unsubscribe button');
+        pushNotificationTools.innerHTML = generateUnsubscribeButtonTemplate();
+        document.getElementById('unsubscribe-button').addEventListener('click', () => {
+          unsubscribe().finally(() => {
+            this.#setupPushNotification();
+          });
         });
-      });
-      return;
-    }
-  
-    if (!pushNotificationTools) {
-      console.warn('Element #push-notification-tools not found.');
-      return;
-    }
+        return;
+      }
+    
+      if (!pushNotificationTools) {
+        console.warn('Element #push-notification-tools not found.');
+        return;
+      }
 
-    pushNotificationTools.innerHTML = generateSubscribeButtonTemplate();
+      console.log('User is not subscribed, showing subscribe button');
+      pushNotificationTools.innerHTML = generateSubscribeButtonTemplate();
 
-    const subscribeButton = document.getElementById('subscribe-button');
-    if (subscribeButton) {
-      subscribeButton.addEventListener('click', () => {
-        subscribe().finally(() => {
-          this.#setupPushNotification();
+      const subscribeButton = document.getElementById('subscribe-button');
+      console.log('Subscribe button found:', !!subscribeButton);
+      
+      if (subscribeButton) {
+        subscribeButton.addEventListener('click', () => {
+          console.log('Subscribe button clicked');
+          subscribe().finally(() => {
+            this.#setupPushNotification();
+          });
         });
-      });
+      }
+    } catch (error) {
+      console.error('Error in setupPushNotification:', error);
     }
   }
 
